@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="shortcut icon" th:href="@{/static/favicon.ico}"/>
+    <title>ERROR</title>
+</head>
+<body>
+    <div th:text="${message}"></div>
+    <script th:src="@{/static/jquery.min.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        let a_idx = 0;
+        jQuery(document).ready(function ($) {
+            $("body").click(function (e) {
+                const a = ["富强", "民主", "文明", "和谐", "自由", "平等", "公正", "法治", "爱国", "敬业", "诚信", "友善"];
+                const $i = $("<span/>").text(a[a_idx]);
+                a_idx = (a_idx + 1) % a.length;
+                const x = e.pageX, y = e.pageY;
+                $i.css({
+                    "z-index": 999999999999999999999999999999999999999999999999999999999999999999999,
+                    "top": y - 20,
+                    "left": x,
+                    "position": "absolute",
+                    "font-weight": "bold",
+                    "color": "#4377f1"
+                });
+                $("body").append($i);
+                $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                }, 1500, function () {
+                    $i.remove();
+                });
+            });
+        });
+    </script>
+    <style type="text/css" th:inline="text">
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        div {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            text-align: center;
+            background-color: #e5e5e5;
+        }
+    </style>
+</body>
+</html>

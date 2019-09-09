@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.kpi.dao.KpiProfileAppealMapper" >
+    <resultMap id="BaseResultMap" type="cn.promptness.kpi.domain.pojo.KpiProfileAppeal" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="project_id" property="projectId" jdbcType="BIGINT" />
+        <result column="profile_id" property="profileId" jdbcType="BIGINT" />
+        <result column="current_count" property="currentCount" jdbcType="INTEGER" />
+        <result column="before_state" property="beforeState" jdbcType="DOUBLE" />
+        <result column="after_state" property="afterState" jdbcType="DOUBLE" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="is_confirm" property="isConfirm" jdbcType="BIT" />
+        <result column="handle_user_id" property="handleUserId" jdbcType="VARCHAR" />
+        <result column="result_type" property="resultType" jdbcType="BIT" />
+        <result column="state_time" property="stateTime" jdbcType="TIMESTAMP" />
+        <result column="handle_time" property="handleTime" jdbcType="TIMESTAMP" />
+        <result column="handle_reason" property="handleReason" jdbcType="VARCHAR" />
+        <result column="state_reason" property="stateReason" jdbcType="VARCHAR" />
+        <result column="handle_user_name" property="handleUserName" jdbcType="VARCHAR" />
+    </resultMap>
+</mapper>

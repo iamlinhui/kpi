@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.kpi.dao.KpiProjectMapper">
+    <resultMap id="BaseResultMap" type="cn.promptness.kpi.domain.pojo.KpiProject">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="remind_time" property="remindTime" jdbcType="VARCHAR"/>
+        <result column="user_count" property="userCount" jdbcType="SMALLINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="is_open" property="isOpen" jdbcType="BIT"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier" jdbcType="VARCHAR"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, `name`, start_time, end_time, remind_time, user_count, remark, status, is_open, creator, create_time, modifier, modify_time
+    </sql>
+    <update id="updateState">
+        UPDATE kpi_project SET status = #{toState}
+        WHERE id = #{projectId} AND status = #{fromState}
+    </update>
+    <select id="listProject" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_project
+        WHERE status IN <foreach collection="stateList" separator="," open="(" close=")" item="state">#{state}</foreach>
+        AND is_open = #{isOpen}
+    </select>
+    <select id="listProjectByIdAndStates" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_project
+        WHERE id IN <foreach collection="projectIdList" separator="," open="(" close=")" item="projectId">#{projectId}</foreach>
+        AND status IN <foreach collection="stateList" separator="," open="(" close=")" item="state">#{state}</foreach>
+        AND is_open = #{isOpen}
+    </select>
+    <select id="getProjectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_project
+        WHERE id = #{projectId}
+    </select>
+
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.kpi.dao.KpiProfileScoreMapper">
+    <resultMap id="BaseResultMap" type="cn.promptness.kpi.domain.pojo.KpiProfileScore">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="job" property="job" jdbcType="VARCHAR"/>
+        <result column="comment" property="comment" jdbcType="VARCHAR"/>
+        <result column="score" property="score" jdbcType="DOUBLE"/>
+        <result column="category" property="category" jdbcType="TINYINT"/>
+        <result column="relation_id" property="relationId" jdbcType="INTEGER"/>
+        <result column="flow_id" property="flowId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, user_id, job, comment, score, category, relation_id, flow_id, create_time, modify_time
+    </sql>
+
+    <sql id="Left_Base_Column_List" >
+        kpi_profile_score.id, kpi_profile_score.user_id, kpi_profile_score.job, kpi_profile_score.comment, kpi_profile_score.score,
+        kpi_profile_score.category, kpi_profile_score.relation_id, kpi_profile_score.flow_id, kpi_profile_score.create_time, kpi_profile_score.modify_time,
+        kpi_group_flow.user_name
+    </sql>
+
+    <select id="listByFlowLevelAndProfileId" resultMap="BaseResultMap">
+        SELECT <include refid="Left_Base_Column_List"/> FROM kpi_profile_score
+        LEFT JOIN kpi_group_flow
+        ON kpi_profile_score.flow_id = kpi_group_flow.id
+        AND kpi_group_flow.group_id = #{groupId}
+        AND kpi_group_flow.level <![CDATA[ <= #{groupFlowLevel} ]]>
+        WHERE kpi_profile_score.category = #{category} AND kpi_profile_score.relation_id= #{profileId}
+        ORDER BY kpi_group_flow.level ASC
+    </select>
+    <select id="listByProfileId" resultMap="BaseResultMap">
+        SELECT <include refid="Left_Base_Column_List"/> FROM kpi_profile_score
+        LEFT JOIN kpi_group_flow
+        ON kpi_profile_score.flow_id = kpi_group_flow.id
+        AND kpi_group_flow.group_id = #{groupId}
+        WHERE kpi_profile_score.category = #{category} AND kpi_profile_score.relation_id= #{profileId}
+        ORDER BY kpi_group_flow.level ASC
+    </select>
+    <select id="getCurrentProfileScore" resultType="double">
+        SELECT score FROM kpi_profile_score
+        WHERE flow_id = #{groupFlowId} AND category = #{profileScoreType}
+    </select>
+    <select id="listByFlowIdAndScoreType" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_profile_score
+        WHERE flow_id = #{groupFlowId} AND category = #{profileScoreType}
+    </select>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.kpi.dao.KpiConsoleMapper">
+    <resultMap id="BaseResultMap" type="cn.promptness.kpi.domain.pojo.KpiConsole">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="profile_id" property="profileId" jdbcType="INTEGER"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="group_id" property="groupId" jdbcType="INTEGER"/>
+        <result column="flow_id" property="flowId" jdbcType="INTEGER" />
+        <result column="node" property="node" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="finish_count" property="finishCount" jdbcType="INTEGER"/>
+        <result column="total_count" property="totalCount" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="dead_line" property="deadLine" jdbcType="TIMESTAMP"/>
+        <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="is_hide" property="isHide" jdbcType="BIT" />
+        <result column="is_finished" property="isFinished" jdbcType="BIT" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, profile_id, project_id,group_id,flow_id, node, user_id, finish_count, total_count, create_time,dead_line,
+        finish_time, remark,is_hide,is_finished
+    </sql>
+
+    <insert id="insertSelective" parameterType="cn.promptness.kpi.domain.pojo.KpiConsole">
+        insert into kpi_console
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="profileId != null">profile_id,</if>
+            <if test="projectId != null">project_id,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="flowId != null">flow_id,</if>
+            <if test="node != null">node,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="finishCount != null">finish_count,</if>
+            <if test="totalCount != null">total_count,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="deadLine != null">dead_line,</if>
+            <if test="finishTime != null">finish_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="isHide != null">is_hide,</if>
+            <if test="isFinished != null">is_finished,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=INTEGER},</if>
+            <if test="profileId != null">#{profileId,jdbcType=INTEGER},</if>
+            <if test="projectId != null">#{projectId,jdbcType=INTEGER},</if>
+            <if test="groupId != null">#{groupId,jdbcType=INTEGER},</if>
+            <if test="flowId != null">#{flowId,jdbcType=INTEGER},</if>
+            <if test="node != null">#{node,jdbcType=INTEGER},</if>
+            <if test="userId != null">#{userId,jdbcType=VARCHAR},</if>
+            <if test="finishCount != null">#{finishCount,jdbcType=INTEGER},</if>
+            <if test="totalCount != null">#{totalCount,jdbcType=INTEGER},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+            <if test="deadLine != null">#{deadLine,jdbcType=TIMESTAMP},</if>
+            <if test="finishTime != null">#{finishTime,jdbcType=TIMESTAMP},</if>
+            <if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+            <if test="isHide != null">#{isHide,jdbcType=INTEGER},</if>
+            <if test="isFinished != null">#{isFinished,jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+    <update id="updateFinishTime">
+        UPDATE kpi_console SET finish_time = #{finishTime},is_finished = #{isFinished}
+        WHERE flow_id = #{flowId} AND finish_count = total_count
+    </update>
+    <update id="updateHideByProjectId">
+        UPDATE kpi_console SET is_hide = #{isHide}
+        WHERE project_id = #{projectId}
+    </update>
+
+    <select id="listConsole" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_console
+        WHERE user_id = #{userId} AND project_id = #{projectId}
+    </select>
+    <select id="getConsoleByIdAndUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_console
+        WHERE id = #{consoleId} AND user_id = #{userId}
+    </select>
+
+</mapper>

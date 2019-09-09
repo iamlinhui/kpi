@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.kpi.dao.KpiProjectNoticeMapper" >
+    <resultMap id="BaseResultMap" type="cn.promptness.kpi.domain.pojo.KpiProjectNotice" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+        <result column="remind_day" property="remindDay" jdbcType="TINYINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="project_time_id" property="projectTimeId" jdbcType="INTEGER" />
+    </resultMap>
+</mapper>

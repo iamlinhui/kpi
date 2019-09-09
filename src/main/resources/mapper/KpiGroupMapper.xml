@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.kpi.dao.KpiGroupMapper">
+    <resultMap id="BaseResultMap" type="cn.promptness.kpi.domain.pojo.KpiGroup">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+        <result column="process_instance_id" property="processInstanceId" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
+        <result column="category" property="category" jdbcType="BIT"/>
+        <result column="kpi_percent" property="kpiPercent" jdbcType="TINYINT"/>
+        <result column="point_ceil" property="pointCeil" jdbcType="TINYINT"/>
+        <result column="point_floor" property="pointFloor" jdbcType="TINYINT"/>
+        <result column="interviewer_id" property="interviewerId" jdbcType="VARCHAR"/>
+        <result column="interviewer_name" property="interviewerName" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="office_id" property="officeId" jdbcType="VARCHAR"/>
+        <result column="office_name" property="officeName" jdbcType="VARCHAR"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier" jdbcType="VARCHAR"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, parent_id, process_instance_id, `name`, `type`, category, kpi_percent, point_ceil,
+        point_floor, interviewer_id, interviewer_name, remark, office_id, office_name, project_id,
+        creator, create_time, modifier, modify_time
+    </sql>
+    <update id="saveProcessInstanceId">
+        UPDATE kpi_group SET process_instance_id = #{processInstanceId}
+        WHERE id = #{groupId} AND process_instance_id = 0
+    </update>
+    <select id="listProjectIdByUserId" resultType="int">
+        SELECT project_id FROM kpi_group
+        WHERE interviewer_id = #{userId}
+    </select>
+    <select id="listGroupById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_group
+        WHERE id IN <foreach collection="groupIdList" item="groupId" open="(" close=")" separator=",">#{groupId}</foreach>
+    </select>
+    <select id="listSubGroupIdByParentId" resultType="int">
+        SELECT id FROM kpi_group
+        WHERE parent_id = #{parentId}
+    </select>
+    <select id="listTopGroupByProjectId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_group
+        WHERE project_id = #{projectId} AND parent_id = 0
+    </select>
+    <select id="listSubGroupByProjectId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_group
+        WHERE project_id = #{projectId} AND parent_id > 0
+    </select>
+    <select id="listProcessInstanceIdList" resultType="string">
+        SELECT process_instance_id FROM kpi_group
+        WHERE project_id = #{projectId} AND parent_id = 0
+    </select>
+    <select id="getGroupById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_group
+        WHERE id = #{groupId}
+    </select>
+
+</mapper>

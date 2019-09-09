@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.kpi.dao.KpiGroupMemberMapper">
+    <resultMap id="BaseResultMap" type="cn.promptness.kpi.domain.pojo.KpiGroupMember">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="office_id" property="officeId" jdbcType="VARCHAR"/>
+        <result column="office_name" property="officeName" jdbcType="VARCHAR"/>
+        <result column="job_name" property="jobName" jdbcType="VARCHAR"/>
+        <result column="leader_id" property="leaderId" jdbcType="VARCHAR"/>
+        <result column="leader_name" property="leaderName" jdbcType="VARCHAR"/>
+        <result column="company_date" property="companyDate" jdbcType="TIMESTAMP"/>
+        <result column="is_service" property="isService" jdbcType="BIT"/>
+        <result column="is_service_predict" property="isServicePredict" jdbcType="BIT"/>
+        <result column="is_salary_predict" property="isSalaryPredict" jdbcType="BIT"/>
+        <result column="group_id" property="groupId" jdbcType="INTEGER"/>
+        <result column="profile_id" property="profileId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, user_id, user_name, office_id, office_name, job_name, leader_id, leader_name,
+        company_date, is_service, is_service_predict, is_salary_predict, group_id, profile_id
+    </sql>
+
+    <select id="listUserIdByGroupId" resultType="string">
+        SELECT user_id FROM kpi_group_member
+        WHERE group_id = #{groupId}
+    </select>
+    <select id="listByGroupId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_group_member
+        WHERE group_id = #{groupId}
+    </select>
+
+</mapper>

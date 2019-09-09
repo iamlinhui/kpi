@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.kpi.dao.KpiProfileMapper">
+    <resultMap id="BaseResultMap" type="cn.promptness.kpi.domain.pojo.KpiProfile">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="self_score" property="selfScore" jdbcType="DOUBLE"/>
+        <result column="self_result" property="selfResult" jdbcType="CHAR"/>
+        <result column="examine_score" property="examineScore" jdbcType="DOUBLE"/>
+        <result column="examine_result" property="examineResult" jdbcType="CHAR"/>
+        <result column="final_score" property="finalScore" jdbcType="DOUBLE"/>
+        <result column="final_result" property="finalResult" jdbcType="CHAR"/>
+        <result column="states" property="states" jdbcType="TINYINT"/>
+        <result column="interview" property="interview" jdbcType="TINYINT"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+        <result column="target_time" property="targetTime" jdbcType="TIMESTAMP"/>
+        <result column="self_time" property="selfTime" jdbcType="TIMESTAMP"/>
+        <result column="confirm_time" property="confirmTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+        <result column="self_summary" property="selfSummary" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, self_score, self_result, examine_score, examine_result, final_score,
+        final_result, states, interview, project_id, target_time, self_time, confirm_time, create_time, modify_time,self_summary
+    </sql>
+
+    <insert id="insertSelective" parameterType="cn.promptness.kpi.domain.pojo.KpiProfile" useGeneratedKeys="true" keyProperty="id">
+        insert into kpi_profile
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="selfScore != null">self_score,</if>
+            <if test="selfResult != null">self_result,</if>
+            <if test="examineScore != null">examine_score,</if>
+            <if test="examineResult != null">examine_result,</if>
+            <if test="finalScore != null">final_score,</if>
+            <if test="finalResult != null">final_result,</if>
+            <if test="states != null">states,</if>
+            <if test="interview != null">interview,</if>
+            <if test="projectId != null">project_id,</if>
+            <if test="targetTime != null">target_time,</if>
+            <if test="selfTime != null">self_time,</if>
+            <if test="confirmTime != null">confirm_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="modifyTime != null">modify_time,</if>
+            <if test="selfSummary != null">self_summary,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=INTEGER},</if>
+            <if test="userId != null">#{userId,jdbcType=VARCHAR},</if>
+            <if test="selfScore != null">#{selfScore,jdbcType=DOUBLE},</if>
+            <if test="selfResult != null">#{selfResult,jdbcType=CHAR},</if>
+            <if test="examineScore != null">#{examineScore,jdbcType=DOUBLE},</if>
+            <if test="examineResult != null">#{examineResult,jdbcType=CHAR},</if>
+            <if test="finalScore != null">#{finalScore,jdbcType=DOUBLE},</if>
+            <if test="finalResult != null">#{finalResult,jdbcType=CHAR},</if>
+            <if test="states != null">#{states,jdbcType=TINYINT},</if>
+            <if test="interview != null">#{interview,jdbcType=TINYINT},</if>
+            <if test="projectId != null">#{projectId,jdbcType=INTEGER},</if>
+            <if test="targetTime != null">#{targetTime,jdbcType=TIMESTAMP},</if>
+            <if test="selfTime != null">#{selfTime,jdbcType=TIMESTAMP},</if>
+            <if test="confirmTime != null">#{confirmTime,jdbcType=TIMESTAMP},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+            <if test="modifyTime != null">#{modifyTime,jdbcType=TIMESTAMP},</if>
+            <if test="selfSummary != null">#{selfSummary,jdbcType=LONGVARCHAR},</if>
+        </trim>
+    </insert>
+
+    <select id="listProjectIdByUserId" resultType="int">
+        SELECT project_id FROM kpi_profile
+        WHERE user_id = #{userId}
+    </select>
+    <select id="getProfileById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_profile
+        WHERE id = #{profileId}
+    </select>
+    <select id="listUserIdByProjectId" resultType="string">
+        SELECT user_id FROM kpi_profile
+        WHERE project_id = #{projectId}
+    </select>
+    <select id="getProfileByUserIdAndProjectId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_profile
+        WHERE project_id = #{projectId} AND user_id = #{userId}
+    </select>
+    <select id="listProfileByUserIdAndProjectId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_profile
+        WHERE project_id = #{projectId} AND user_id IN <foreach collection="userIdList" item="userId" open="(" close=")" separator=",">#{userId}</foreach>
+    </select>
+
+</mapper>

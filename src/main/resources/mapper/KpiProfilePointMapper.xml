@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.kpi.dao.KpiProfilePointMapper">
+    <resultMap id="BaseResultMap" type="cn.promptness.kpi.domain.pojo.KpiProfilePoint">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="BIT"/>
+        <result column="power" property="power" jdbcType="INTEGER"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="statement" property="statement" jdbcType="VARCHAR"/>
+        <result column="score" property="score" jdbcType="DOUBLE"/>
+        <result column="can_edit" property="canEdit" jdbcType="BIT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+        <result column="profile_id" property="profileId" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="target" property="target" jdbcType="LONGVARCHAR"/>
+        <result column="explain" property="explain" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, `type`, power, source, statement, score, can_edit, create_time, modify_time, profile_id, sort,target, explain
+    </sql>
+    <select id="listProfilePointByProfileId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_profile_point
+        WHERE profile_id = #{profileId}
+        ORDER BY sort ASC
+    </select>
+</mapper>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title></title>
+</head>
+<body>
+<div>
+    <div class="bg-body">
+        <div class="total-outer">
+            <div class="email-content content-common">
+                <h3 class="h3-common" th:text="|你好,${userName}:|"></h3>
+                <p class="p-common" th:text="${content}"></p>
+                <p class="p-common"><a th:href="${dashboard}" target="_blank"><b>戳此填写</b></a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+    div {
+        box-sizing: border-box;
+    }
+
+    .total-outer {
+        width: 750px;
+        margin: auto;
+    }
+
+    .bg-body {
+        color: rgb(66, 73, 88);
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: rgb(243, 244, 245);
+    }
+
+    .email-content {
+        min-width: 710px;
+        background-color: #fff;
+    }
+
+    .email-content {
+        color: #424958;
+        box-shadow: 0 0 15px 3px rgba(47, 60, 61, .1);
+        padding: 40px 40px 82px;
+    }
+
+    .email-content h3 {
+        font-size: 18px;
+        margin: 13px 0 0;
+        font-weight: 400;
+    }
+
+    .email-content p {
+        line-height: 30px;
+        margin: 22px 0 0;
+        font-size: 14px;
+    }
+
+    .email-content p a {
+        color: #4377f1;
+        text-decoration: none;
+    }
+
+    .email-content hr {
+        background-color: #e5e5e5;
+        border: 0;
+        height: 1px;
+        margin: 60px 0 0;
+    }
+
+    .h3-common {
+        font-size: 18px;
+        margin: 13px 0 0;
+        font-weight: 400;
+    }
+
+    .p-common {
+        line-height: 30px;
+        margin: 22px 0 0;
+        font-size: 14px;
+    }
+
+    .content-common {
+        min-width: 710px;
+        color: rgb(66, 73, 88);
+        box-shadow: rgba(47, 60, 61, 0.0980392) 0 0 15px 3px;
+        padding: 40px 40px 82px;
+        background-color: rgb(255, 255, 255);
+    }
+</style>
+</body>
+</html>

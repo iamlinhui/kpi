@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.promptness.kpi.dao.KpiProjectTimeMapper">
+    <resultMap id="BaseResultMap" type="cn.promptness.kpi.domain.pojo.KpiProjectTime">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="sign" property="sign" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="setting_time" property="settingTime" jdbcType="TIMESTAMP"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
+        <result column="process" property="process" jdbcType="VARCHAR"/>
+        <result column="project_id" property="projectId" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, sign, remark, setting_time, `type`, process, project_id
+    </sql>
+    <insert id="insertBatch">
+        INSERT INTO kpi_project_time
+        (
+            sign, remark, setting_time, `type`, process, project_id
+        )
+        values
+        <foreach collection="kpiProjectTimeList" item="kpiProjectTime" separator=",">
+        (
+            #{kpiProjectTime.sign,jdbcType=VARCHAR},
+            #{kpiProjectTime.remark,jdbcType=VARCHAR},
+            #{kpiProjectTime.settingTime,jdbcType=TIMESTAMP},
+            #{kpiProjectTime.type,jdbcType=TINYINT},
+            #{kpiProjectTime.process,jdbcType=VARCHAR},
+            #{kpiProjectTime.projectId,jdbcType=INTEGER}
+        )
+        </foreach>
+    </insert>
+    <select id="getTime" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_project_time
+        WHERE project_id = #{projectId}
+        AND type = #{projectTimeTypeEnum.value}
+        AND process = #{processJobEnum.value}
+    </select>
+    <select id="listTimeByProjectIdAndType" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM kpi_project_time
+        WHERE project_id = #{projectId} AND type = #{projectTimeType}
+    </select>
+</mapper>
